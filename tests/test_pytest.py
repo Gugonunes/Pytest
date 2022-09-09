@@ -56,10 +56,41 @@ def test_quando_brincadeira_receber_20_entao_deve_retornar_goiabada():
 def test_quando_brincadeira_receber__1_entao_deve_retornar_None():
     assert brincadeira(-1) == 'goiabada'
 
-@mark.parametrizado
+@mark.xfail()
+def test_xfail():
+    assert brincadeira(20) != 'goiabada'
+
+@mark.xfail()
+def test_xfail2():
+    assert brincadeira(20) == 'goiabada'
+
+import sys
+@mark.xfail(sys.platform == 'win32')
+def test_xfailwindows():
+    assert brincadeira(20) == 'goiabada'
+
+@mark.skipif(reason = "sys.platform == 'win32'")
+def test_skipif_windows_skip():
+    assert brincadeira(20) == 'goiabada'
+
 @mark.parametrize(
     'entrada',
     [5, 10, 20, 25, 35]
 )
 def test_brincadeira_deve_retornar_goiabada_com_multiplos_de_5(entrada):
-    assert brincadeira(20) == 'goiabada'
+    assert brincadeira(entrada) == 'goiabada'
+
+@mark.parametrize(
+    'entrada',
+    [3, 6, 9, 12, 18]
+)
+def test_brincadeira_deve_retornar_quijo_com_multiplos_de_3(entrada):
+    assert brincadeira(entrada) == 'queijo'
+
+@mark.parametrizado
+@mark.parametrize(
+    'entrada,esperado',
+    [(1,1), (2,2), (3, 'queijo'), (4, 4), (5, 'goiabada')]
+)
+def test_brincadeira_deve_retornar_valor_esperado(entrada, esperado):
+    assert brincadeira(entrada) == esperado

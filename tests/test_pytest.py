@@ -1,5 +1,10 @@
 from codigo.jogo import brincadeira
-from pytest import mark
+from pytest import mark, fixture
+
+@fixture
+def minha_fixture():
+    '''Essa fixture será feita futuramente.'''
+    return 3
 
 '''def test_meu_primeiro_teste():
        assert True'''
@@ -12,13 +17,20 @@ from pytest import mark
 
 """
 O teste é formado por tres etapas (GWT - AAA):
-1- Given - Dado
-2- When - Quando
-3- Then - Então
+1- Given        - Dado
+2- When         - Quando
+3- Then         - Então
 
 - Arange
 - Act
 - Assert
+
+xUnit Patterns
+- Setup         - Dado
+- Exercise      - Quando
+- Verify        - Então
+- TearDown      - "Desmonta tudo"
+
 """
 @mark.smoke
 def test_quando_brincadeira_receber_1_entao_deve_retornar_1():
@@ -94,3 +106,13 @@ def test_brincadeira_deve_retornar_quijo_com_multiplos_de_3(entrada):
 )
 def test_brincadeira_deve_retornar_valor_esperado(entrada, esperado):
     assert brincadeira(entrada) == esperado
+
+@mark.stdout
+def test_brincadeira_deve_escrever_entrei_na_brincadeira_na_tela(capsys):
+    brincadeira(0)
+    resultado = capsys.readouterr()
+    assert resultado.out == 'Entrei na brincadeira!\n'
+
+@mark.exemplo
+def test_minha_fixture_em_acao(minha_fixture):
+    print(minha_fixture)
